@@ -260,6 +260,102 @@
 </table>
 
 ### Практическая часть
-Построим карту сети:  
+Построим карту сети, выделив из свободного диапозона 2 подсети по 30 маске для соединения CentralRouter и Office1Router, а также CentralRouter и Office2Router:  
   
 ![map 2](network_map_2.jpg)
+
+  
+На основании схемы построим таблицу адресации серверов:
+<table>
+  <tr>
+    <th>Название</th>
+    <th>IP-адрес</th>
+    <th>С чем соединен интерфейс</th>
+  </tr>
+  <tr>
+    <th rowspan="2">InetRouter</th>
+    <td>VirtualBox NAT Network</td>
+    <td>VirtualBox Host</td>
+  </tr>
+  <tr>
+    <td>192.168.255.1/30</td>
+    <td>CentralRouter</td>
+  </tr>  
+    <tr>
+    <th rowspan="6">CentralRouter</th>
+    <td>192.168.255.2/30</td>
+    <td>InetRouter</td>
+  </tr>
+  <tr>
+    <td>192.168.0.1/28</td>
+    <td>CentralServer</td>
+  </tr>  
+  <tr>
+    <td>192.168.0.33/28</td>
+    <td>Подсеть Office Hardware</td>
+  </tr>  
+   <tr>
+    <td>192.168.0.65/26</td>
+     <td>Подсеть Wi-Fi</td>
+  </tr>
+  <tr>
+    <td>192.168.255.5/30</td>
+     <td>Office2Router</td>
+  </tr>
+  <tr>
+    <td>192.168.255.9/30</td>
+     <td>Office1Router</td>
+  </tr>
+  <tr>
+    <th rowspan="5">Office1Router</th>
+    <td>192.168.2.1/26</td>
+    <td>Подсеть Dev</td>
+  </tr>
+  <tr>
+    <td>192.168.2.65/28</td>
+    <td>Подсеть Test Servers</td>
+  </tr>
+  <tr>
+    <td>192.168.2.129/26</td>
+    <td>Office1Server</td>
+  </tr>
+  <tr>
+    <td>192.168.2.192/26</td>
+    <td>Подсеть Office Hardware</td>
+  </tr>
+  <tr>
+    <td>192.168.255.10/30</td>
+     <td>CentralRouter</td>
+  </tr>
+  <tr>
+    <th rowspan="4">Office2Router</th>
+    <td>192.168.1.1/25</td>
+    <td>Office2Server</td>
+  </tr>
+  <tr>
+    <td>192.168.1.129/26</td>
+    <td>Подсеть Test Servers</td>
+  </tr>
+  <tr>
+    <td>192.168.1.192/26</td>
+    <td>Подсеть Office Hardware</td>
+  </tr>
+  <tr>
+    <td>192.168.255.6/30</td>
+     <td>CentralRouter</td>
+  </tr>
+  <tr>
+    <th>CentralServer</th>
+    <td>192.168.0.2/28</td>
+    <td>CentralRouter</td>
+  </tr>
+  <tr>
+    <th>Office1Server</th>
+    <td>192.168.2.130/26</td>
+    <td>Office1Router</td>
+  </tr>
+  <tr>
+    <th>Office2Server</th>
+    <td>192.168.1.2/25</td>
+    <td>Office2Router</td>
+  </tr>
