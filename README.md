@@ -362,3 +362,52 @@
 </table>  
   
 Реализуем эту схему с помощью **Vagrant**.  Управлять серверами будем с помощью **Ansible**. Для этого каждому серверу добавим еще один сетевой интерфейс в подсети 192.168.56.0/24.
+
+Для начала настроим сервера вручную. На всех серверах, кроме **inetRouter** удалим, созданный Vagrant'ом, маршрут по умолчанию. Для этого изменим файл /etc/netplan/00-installer-config.yaml
+```bash
+network:
+  ethernets:
+    eth0:
+      dhcp4: true
+      dhcp4-overrides:
+        use-routes: false
+      dhcp6: false
+  version: 2
+```
+Добавим недостающие маршруты. На серверах **centralServer**, **office1Server**, **office2Server**, **office1Router** и **office2Router** достаточно добавить маршрут по умолчанию:
+#### centralServer
+```bash
+ip route add default via 192.168.0.1
+```
+#### office1Server
+```bash
+ip route add default via 192.168.2.129
+```
+#### office2Server
+```bash
+ip route add default via 192.168.1.1
+```
+#### office1Router
+```bash
+ip route add default via 192.168.255.9
+```
+#### office2Router
+```bash
+ip route add default via 192.168.255.5
+```
+На сервере **centralRouter** добавим два маршрута в подсети 192.168.1.0/24 и 192.168.2.0/24, а также марщрут по умолчанию:
+#### centralRouter
+```bash
+ip route add 192.168.1.0/24 via 192.168.255.6
+ip route add 192.168.2.0/24 via 192.168.255.10
+ip route add default via 192.168.255.1
+```
+На сервере **inetRouter** необходимо указать маршруты в каждую подсеть:
+#### inetRouter
+```bash
+ip route add 192.168.1.0/24 via 192.168.255.2
+ip route add 192.168.2.0/24 via 192.168.255.2
+ip route add 192.168.0.0/24 via 192.168.255.2
+ip route add 192.168.255.4/30 via 192.168.255.2
+ip route add 192.168.255.8/30 via 192.168.255.2
+```
