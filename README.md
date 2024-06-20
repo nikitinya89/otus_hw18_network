@@ -420,8 +420,47 @@ sysctl -p
 ```bash
 iptables -t nat -A POSTROUTING ! -d 192.168.0.0/16 -o eth0 -j MASQUERADE
 ```
-На этом настройка серверов закончена. Убедимся, что все сервера видят друга друга, а также имеют доступ в Интернет через **inetRouter**.
+На этом настройка серверов закончена. Убедимся, что все сервера видят друга друга, а также имеют доступ в Интернет через **inetRouter**.  
+На примере **office1Server**:
+```bash
+vagrant@office1Server:~$ ping 192.168.0.1 -c 1 && ping 192.168.0.2 -c 1 && ping 192.168.1.1 -c 1 && ping 192.168.1.2 -c 1 && ping 192.168.2.1 -c 1 && ping 8.8.8.8 -c 1
+PING 192.168.0.1 (192.168.0.1) 56(84) bytes of data.
+64 bytes from 192.168.0.1: icmp_seq=1 ttl=63 time=1.56 ms
 
+--- 192.168.0.1 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.561/1.561/1.561/0.000 ms
+PING 192.168.0.2 (192.168.0.2) 56(84) bytes of data.
+64 bytes from 192.168.0.2: icmp_seq=1 ttl=62 time=1.53 ms
+
+--- 192.168.0.2 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.533/1.533/1.533/0.000 ms
+PING 192.168.1.1 (192.168.1.1) 56(84) bytes of data.
+64 bytes from 192.168.1.1: icmp_seq=1 ttl=62 time=1.22 ms
+
+--- 192.168.1.1 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.221/1.221/1.221/0.000 ms
+PING 192.168.1.2 (192.168.1.2) 56(84) bytes of data.
+64 bytes from 192.168.1.2: icmp_seq=1 ttl=61 time=1.01 ms
+
+--- 192.168.1.2 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.014/1.014/1.014/0.000 ms
+PING 192.168.2.1 (192.168.2.1) 56(84) bytes of data.
+64 bytes from 192.168.2.1: icmp_seq=1 ttl=64 time=0.318 ms
+
+--- 192.168.2.1 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.318/0.318/0.318/0.000 ms
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=56 time=73.3 ms
+
+--- 8.8.8.8 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 73.252/73.252/73.252/0.000 ms
+```
 
 
 Так как данные настройки пропадут после перезагрузки, выполним конфигурацию серверов с помощью **Ansible**:
